@@ -8,3 +8,4 @@ license = "MIT"
 
 [dependencies]
 aoc = { path = "../.." }
+md-5 = "0.10"
