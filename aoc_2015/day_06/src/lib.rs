@@ -48,7 +48,7 @@ fn parse_instruction(line: &str) -> Result<(Action, Range)> {
     Ok((action, range))
 }
 
-fn parse_range<'a>(instruction: &str, skip: usize) -> Result<(&str, &str)> {
+fn parse_range(instruction: &str, skip: usize) -> Result<(&str, &str)> {
     let mut iter = instruction.split_whitespace().skip(skip);
     let from = match iter.next() {
         Some(from) => from,
