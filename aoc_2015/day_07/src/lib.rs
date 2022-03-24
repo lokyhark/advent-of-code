@@ -10,7 +10,7 @@ pub fn part_one(input: &str) -> Result<u16> {
     solve(input.trim(), &mut signals, ["a"])?;
     match signals.get("a") {
         Some(signal) => Ok(*signal),
-        None => return Err("signal 'a' not found".into()),
+        None => Err("signal 'a' not found".into()),
     }
 }
 
@@ -26,7 +26,7 @@ pub fn part_two(input: &str) -> Result<u16> {
     solve(input.trim(), &mut signals, ["a"])?;
     match signals.get("a") {
         Some(signal) => Ok(*signal),
-        None => return Err("signal 'a' not found".into()),
+        None => Err("signal 'a' not found".into()),
     }
 }
 
