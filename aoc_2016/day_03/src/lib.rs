@@ -8,9 +8,9 @@ pub fn part_one(input: &str) -> Result<usize> {
     for line in input.lines() {
         let mut split = line.split_ascii_whitespace();
         let mut sides = [0u32; 3];
-        for idx in 0..3 {
+        for side in &mut sides {
             match split.next().map(|x| x.parse()) {
-                Some(Ok(x)) => sides[idx] = x,
+                Some(Ok(x)) => *side = x,
                 Some(Err(_)) => return Err("invalid side length".into()),
                 None => return Err("invalid triangle".into()),
             }
@@ -33,9 +33,9 @@ pub fn part_two(input: &str) -> Result<usize> {
                 None => return Err("invalid number of lines".into()),
             };
             let mut split = line.split_ascii_whitespace();
-            for j in 0..3 {
+            for side in &mut sides {
                 match split.next().map(|x| x.parse()) {
-                    Some(Ok(x)) => sides[j][i] = x,
+                    Some(Ok(x)) => side[i] = x,
                     Some(Err(_)) => return Err("invalid side length".into()),
                     None => return Err("invalid triangle".into()),
                 }
@@ -51,8 +51,8 @@ pub fn part_two(input: &str) -> Result<usize> {
 }
 
 fn is_triangle_possible(sides: [u32; 3]) -> bool {
-    let perimeter: u32 = sides.iter().sum();
-    sides.iter().all(|&side| side < perimeter - side)
+    let perimeter = sides.iter().sum::<u32>() as i32;
+    sides.iter().all(|&side| perimeter - 2 * (side as i32) > 0)
 }
 
 #[test]
