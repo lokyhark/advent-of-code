@@ -8,3 +8,5 @@ license = "MIT"
 
 [dependencies]
 aoc = { path = "../.." }
+regex = { version = "1" }
+serde_json = { version = "1" }
