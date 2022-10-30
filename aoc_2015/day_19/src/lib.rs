@@ -22,18 +22,13 @@ pub fn part_one(input: &str) -> Result<usize> {
     let mut molecules = HashSet::new();
     for (pattern, replace) in replacements {
         let mut start = 0;
-        loop {
-            match initial[start..].find(pattern) {
-                Some(index) => {
-                    start = index + start;
-                    let stop = start + pattern.len();
-                    let mut molecule = initial.to_string();
-                    molecule.replace_range(start..stop, replace);
-                    molecules.insert(molecule);
-                    start = stop;
-                }
-                None => break,
-            }
+        while let Some(index) = initial[start..].find(pattern) {
+            start += index;
+            let stop = start + pattern.len();
+            let mut molecule = initial.to_string();
+            molecule.replace_range(start..stop, replace);
+            molecules.insert(molecule);
+            start = stop;
         }
     }
     Ok(molecules.len())
