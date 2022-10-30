@@ -56,7 +56,7 @@ pub fn part_two(input: &str) -> Result<usize> {
     let mut count = 0;
     while molecule != "e" {
         for (pattern, replace) in &replacements {
-            if molecule.find(replace).is_some() {
+            if molecule.contains(replace) {
                 molecule = molecule.replacen(replace, pattern, 1);
                 count += 1;
             }
