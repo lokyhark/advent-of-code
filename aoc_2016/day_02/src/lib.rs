@@ -1,3 +1,4 @@
+#![allow(clippy::manual_range_patterns)]
 use aoc::Result;
 
 pub const YEAR: u32 = 2016;

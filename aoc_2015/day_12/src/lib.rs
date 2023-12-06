@@ -19,8 +19,7 @@ pub fn part_two(input: &str) -> Result<i64> {
     };
     let mut stack = vec![json];
     let mut sum = 0;
-    while !stack.is_empty() {
-        let value = stack.pop().unwrap();
+    while let Some(value) = stack.pop() {
         match value {
             Value::Null | Value::Bool(_) | Value::String(_) => {}
             Value::Number(number) => match number.as_i64() {
