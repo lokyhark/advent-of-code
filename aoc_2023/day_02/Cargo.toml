@@ -1,0 +1,9 @@
+[package]
+name = "aoc_2023_day_02"
+version = "1.0.0"
+edition = "2021"
+description = "Advent of Code 2023-2"
+license = "MIT"
+
+[dependencies]
+aoc = { path = "../.." }
