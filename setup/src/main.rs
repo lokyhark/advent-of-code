@@ -8,7 +8,7 @@ fn main() -> Result<()> {
     let client = client(&cookie)?;
     let root = std::env::current_dir().unwrap();
     for year in 2023..=2023 {
-        for day in 2..=2 {
+        for day in 3..=3 {
             setup_layout(&root, &client, year, day)?;
         }
     }
