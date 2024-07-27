@@ -140,7 +140,7 @@ fn parse_shop() -> Result<Shop> {
         };
         loop {
             let line = match iter.next() {
-                Some(line) if line.is_empty() => break,
+                Some("") => break,
                 None => break,
                 Some(line) => line,
             };
