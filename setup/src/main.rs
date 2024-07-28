@@ -1,14 +1,22 @@
-use std::{fs::File, path::Path};
+use std::{
+    fs::File,
+    io::{stdin, Read},
+    path::Path,
+};
 
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use isahc::{HttpClient, ReadResponseExt};
 
 fn main() -> Result<()> {
-    let cookie = std::env::args().nth(1).expect("no cookie argument");
+    let mut cookie = String::new();
+    match stdin().read_to_string(&mut cookie) {
+        Ok(_) => (),
+        Err(error) => return Err(anyhow!("stdin error: {}", error)),
+    }
     let client = client(&cookie)?;
     let root = std::env::current_dir().unwrap();
-    for year in 2023..=2023 {
-        for day in 4..=4 {
+    for year in 2022..=2022 {
+        for day in 6..=6 {
             setup_layout(&root, &client, year, day)?;
         }
     }
