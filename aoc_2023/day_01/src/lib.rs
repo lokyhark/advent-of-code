@@ -63,7 +63,7 @@ pub fn part_two(input: &str) -> Result<u32> {
         let val = left * 10 + right;
         sum += val;
     }
-    Ok(dbg!(sum))
+    Ok(sum)
 }
 
 pub fn parse_digit(digit: &str) -> u32 {
