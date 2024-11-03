@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 16;
@@ -23,10 +23,10 @@ pub fn part_one(input: &str) -> Result<usize> {
         .map(|(i, _)| i + 1)
         .collect();
     if sue.is_empty() {
-        return Err("Sue not found".into());
+        return err!("Sue not found");
     }
     if sue.len() != 1 {
-        return Err("Multiple Sue found".into());
+        return err!("Multiple Sue found");
     }
     Ok(sue[0])
 }
@@ -51,10 +51,10 @@ pub fn part_two(input: &str) -> Result<usize> {
         .map(|(i, _)| i + 1)
         .collect();
     if sue.is_empty() {
-        return Err("Sue not found".into());
+        return err!("Sue not found");
     }
     if sue.len() != 1 {
-        return Err("Multiple Sue found".into());
+        return err!("Multiple Sue found");
     }
     Ok(sue[0])
 }
@@ -65,16 +65,16 @@ fn parse_input(input: &str) -> Result<Vec<Sue>> {
         let mut sue = Sue::default();
         let compounds = match line.split_once(':') {
             Some(split) => split.1.trim(),
-            None => return Err("invalid input".into()),
+            None => return err!("invalid input"),
         };
         for compound in compounds.split(',').map(|x| x.trim()) {
             let (name, count) = match compound.split_once(':') {
                 Some(split) => (split.0.trim(), split.1.trim()),
-                None => return Err("invalid input".into()),
+                None => return err!("invalid input"),
             };
             let count = match count.parse() {
                 Ok(value) => value,
-                Err(_) => return Err("invalid input".into()),
+                Err(_) => return err!("invalid input"),
             };
             match name {
                 "children" => sue.children = Some(count),
@@ -87,7 +87,7 @@ fn parse_input(input: &str) -> Result<Vec<Sue>> {
                 "trees" => sue.trees = Some(count),
                 "cars" => sue.cars = Some(count),
                 "perfumes" => sue.perfumes = Some(count),
-                _ => return Err(format!("invalid compound: '{}'", compound).into()),
+                _ => return err!("invalid compound: '{}'", compound),
             }
         }
         sues.push(sue);

@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 5;
@@ -8,7 +8,7 @@ pub const DAY: u32 = 5;
 pub fn part_one(input: &str) -> Result<u32> {
     let mut nice = 0;
     for line in input.trim().lines() {
-        if is_nice_one(line) {
+        if is_nice1(line) {
             nice += 1;
         }
     }
@@ -18,14 +18,14 @@ pub fn part_one(input: &str) -> Result<u32> {
 pub fn part_two(input: &str) -> Result<u32> {
     let mut nice = 0;
     for line in input.trim().lines() {
-        if is_nice_two(line) {
+        if is_nice2(line) {
             nice += 1;
         }
     }
     Ok(nice)
 }
 
-fn is_nice_one(string: &str) -> bool {
+fn is_nice1(string: &str) -> bool {
     if string.chars().filter(|c| "aeiou".contains(*c)).count() < 3 {
         return false;
     }
@@ -43,7 +43,7 @@ fn is_nice_one(string: &str) -> bool {
     true
 }
 
-fn is_nice_two(string: &str) -> bool {
+fn is_nice2(string: &str) -> bool {
     let mut set = HashSet::new();
     let mut iter = string.as_bytes().windows(2).peekable();
     while let Some(next) = iter.next() {
@@ -65,55 +65,55 @@ fn is_nice_two(string: &str) -> bool {
 
 #[test]
 fn part_one_example1() {
-    assert!(is_nice_one("ugknbfddgicrmopn"));
+    assert!(is_nice1("ugknbfddgicrmopn"));
 }
 
 #[test]
 fn part_one_example2() {
-    assert!(is_nice_one("aaa"));
+    assert!(is_nice1("aaa"));
 }
 
 #[test]
 fn part_one_example3() {
-    assert!(!is_nice_one("jchzalrnumimnmhp"));
+    assert!(!is_nice1("jchzalrnumimnmhp"));
 }
 
 #[test]
 fn part_one_example4() {
-    assert!(!is_nice_one("haegwjzuvuyypxyu"));
+    assert!(!is_nice1("haegwjzuvuyypxyu"));
 }
 
 #[test]
 fn part_one_example5() {
-    assert!(!is_nice_one("dvszwmarrgswjxmb"));
+    assert!(!is_nice1("dvszwmarrgswjxmb"));
 }
 
 #[test]
 fn part_two_example1() {
-    assert!(is_nice_two("qjhvhtzxzqqjkmpb"));
+    assert!(is_nice2("qjhvhtzxzqqjkmpb"));
 }
 
 #[test]
 fn part_two_example2() {
-    assert!(is_nice_two("xxyxx"));
+    assert!(is_nice2("xxyxx"));
 }
 
 #[test]
 fn part_two_example3() {
-    assert!(!is_nice_two("uurcxstgmygtbstg"));
+    assert!(!is_nice2("uurcxstgmygtbstg"));
 }
 
 #[test]
 fn part_two_example4() {
-    assert!(!is_nice_two("ieodomkazucvgmuy"));
+    assert!(!is_nice2("ieodomkazucvgmuy"));
 }
 
 #[test]
 fn part_two_example5() {
-    assert!(!is_nice_two("xxx"));
+    assert!(!is_nice2("xxx"));
 }
 
 #[test]
 fn part_two_example6() {
-    assert!(is_nice_two("xxxx"));
+    assert!(is_nice2("xxxx"));
 }

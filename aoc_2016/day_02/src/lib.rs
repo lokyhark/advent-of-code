@@ -1,5 +1,5 @@
 #![allow(clippy::manual_range_patterns)]
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2016;
 pub const DAY: u32 = 2;
@@ -14,7 +14,7 @@ pub fn part_one(input: &str) -> Result<String> {
                 b'D' => keypad.down(),
                 b'L' => keypad.left(),
                 b'R' => keypad.right(),
-                _ => return Err(format!("invalid move: '{}'", byte as char).into()),
+                _ => return err!("invalid move: '{}'", byte as char),
             }
         }
         code.push_str(&keypad.0.to_string());
@@ -32,7 +32,7 @@ pub fn part_two(input: &str) -> Result<String> {
                 b'D' => keypad.down(),
                 b'L' => keypad.left(),
                 b'R' => keypad.right(),
-                _ => return Err(format!("invalid move: '{}'", byte as char).into()),
+                _ => return err!("invalid move: '{}'", byte as char),
             }
         }
         code.push(keypad.0);

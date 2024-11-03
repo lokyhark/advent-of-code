@@ -1,6 +1,6 @@
 use std::fmt::Write;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2022;
 pub const DAY: u32 = 5;
@@ -26,17 +26,17 @@ pub fn part_two(input: &str) -> Result<String> {
 fn parse_input(input: &str) -> Result<(Ship, Procedure)> {
     let mut lines = input.lines();
     let mut line = match lines.next() {
-        None => return Err("invalid ship".into()),
+        None => return err!("invalid ship"),
         Some(line) => line,
     };
     if line.trim().is_empty() {
-        return Err("invalid ship".into());
+        return err!("invalid ship");
     }
     let mut last = line;
     let mut ship = String::new();
     loop {
         line = match lines.next() {
-            None => return Err("invalid ship".into()),
+            None => return err!("invalid ship"),
             Some("") => break,
             Some(line) => line,
         };
@@ -57,7 +57,7 @@ fn parse_ship(slice: &str, size: usize) -> Result<Ship> {
             match mark {
                 b' ' => continue,
                 mark @ b'A'..=b'Z' => ship.insert(idx, mark),
-                _ => return Err("invalid mark".into()),
+                _ => return err!("invalid mark"),
             }
         }
     }
@@ -71,15 +71,15 @@ fn parse_procedure(slice: &str) -> Result<Procedure> {
         let mut split = line.split_ascii_whitespace();
         let count = match split.nth(1).map(|x| x.parse::<usize>()) {
             Some(Ok(count)) => count,
-            _ => return Err("invalid procedure".into()),
+            _ => return err!("invalid procedure"),
         };
         let from = match split.nth(1).map(|x| x.parse::<usize>()) {
             Some(Ok(count)) => count - 1,
-            _ => return Err("invalid procedure".into()),
+            _ => return err!("invalid procedure"),
         };
         let into = match split.nth(1).map(|x| x.parse::<usize>()) {
             Some(Ok(count)) => count - 1,
-            _ => return Err("invalid procedure".into()),
+            _ => return err!("invalid procedure"),
         };
         let action = Action::new(count, from, into);
         procedure.push(action);
@@ -102,7 +102,7 @@ impl Crane for CrateMover9000 {
                     let into = &mut ship.stacks[action.into];
                     into.push(mark)
                 }
-                None => return Err("empty stack".into()),
+                None => return err!("empty stack"),
             };
         }
         Ok(())
@@ -118,7 +118,7 @@ impl Crane for CrateMover9001 {
         for _ in 0..action.count {
             match from.pop() {
                 Some(mark) => vec.push(mark),
-                None => return Err("empty stack".into()),
+                None => return err!("empty stack"),
             };
         }
         let into = &mut ship.stacks[action.into];
@@ -152,7 +152,7 @@ impl Ship {
         for stack in &self.stacks {
             match stack.top() {
                 Some(top) => vec.push(top),
-                None => return Err("empty stack".into()),
+                None => return err!("empty stack"),
             }
         }
         let top = String::from_utf8(vec)?;

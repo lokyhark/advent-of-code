@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use itertools::Itertools;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 9;
@@ -12,7 +12,7 @@ pub fn part_one(input: &str) -> Result<u32> {
     let routes = routes(cities)?;
     match routes.into_iter().min() {
         Some(min) => Ok(min),
-        None => Err("no route found".into()),
+        None => err!("no route found"),
     }
 }
 
@@ -21,7 +21,7 @@ pub fn part_two(input: &str) -> Result<u32> {
     let routes = routes(cities)?;
     match routes.into_iter().max() {
         Some(max) => Ok(max),
-        None => Err("no route found".into()),
+        None => err!("no route found"),
     }
 }
 
@@ -33,15 +33,15 @@ fn cities(input: &str) -> Result<HashMap<&str, HashMap<&str, u32>>> {
                 let path = path.trim();
                 let distance = match distance.trim().parse::<u32>() {
                     Ok(x) => x,
-                    Err(_) => return Err(format!("invalid path: '{}'", line).into()),
+                    Err(_) => return err!("invalid path: '{}'", line),
                 };
                 (path, distance)
             }
-            None => return Err(format!("invalid path: '{}'", line).into()),
+            None => return err!("invalid path: '{}'", line),
         };
         let (from, to) = match path.split_once("to") {
             Some((from, to)) => (from.trim(), to.trim()),
-            None => return Err(format!("invalid path: '{}'", line).into()),
+            None => return err!("invalid path: '{}'", line),
         };
         let map = cities.entry(from).or_insert_with(HashMap::new);
         map.insert(to, distance);

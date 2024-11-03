@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 1;
@@ -9,7 +9,7 @@ pub fn part_one(input: &str) -> Result<i32> {
         match instruction {
             '(' => floor += 1,
             ')' => floor -= 1,
-            _ => return Err(format!("invalid instruction: {}", instruction.escape_default()).into()),
+            _ => return err!("invalid instruction: {}", instruction.escape_default()),
         }
     }
     Ok(floor)
@@ -21,13 +21,13 @@ pub fn part_two(input: &str) -> Result<usize> {
         match instruction {
             '(' => floor += 1,
             ')' => floor -= 1,
-            _ => return Err(format!("invalid instruction: {}", instruction.escape_default()).into()),
+            _ => return err!("invalid instruction: {}", instruction.escape_default()),
         }
         if floor == -1 {
             return Ok(position + 1);
         }
     }
-    Err("basement not found".into())
+    err!("basement not found")
 }
 
 #[test]

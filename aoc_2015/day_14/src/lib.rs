@@ -1,6 +1,6 @@
 use std::{cmp::min, collections::HashMap};
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 14;
@@ -21,21 +21,21 @@ fn reindeers(input: &str) -> Result<Vec<Reindeer>> {
         let mut split = line.split_ascii_whitespace();
         let speed = match split.nth(3).map(|x| x.parse::<u32>()) {
             Some(Ok(speed)) => speed,
-            _ => return Err("invalid input".into()),
+            _ => return err!("invalid input"),
         };
         let fly_time = match split.nth(2).map(|x| x.parse::<u32>()) {
             Some(Ok(time)) => time,
-            _ => return Err("invalid input".into()),
+            _ => return err!("invalid input"),
         };
         let rest_time = match split.nth_back(1).map(|x| x.parse::<u32>()) {
             Some(Ok(time)) => time,
-            _ => return Err("invalid input".into()),
+            _ => return err!("invalid input"),
         };
         let reindeer = Reindeer { speed, fly_time, rest_time };
         reindeers.push(reindeer);
     }
     if reindeers.is_empty() {
-        return Err("invalid input".into());
+        return err!("invalid input");
     }
     Ok(reindeers)
 }

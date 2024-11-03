@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2021;
 pub const DAY: u32 = 2;
@@ -18,16 +18,19 @@ pub fn part_two(input: &str) -> Result<u32> {
 fn course<S: Submarine>(submarine: &mut S, input: &str) -> Result<()> {
     for line in input.lines() {
         let mut split = line.split_ascii_whitespace();
-        let command = split.next().ok_or("invalid command".to_string())?;
+        let command = match split.next() {
+            Some(command) => command,
+            None => return err!("invalid command"),
+        };
         let value = match split.next().map(|x| x.parse::<u32>()) {
             Some(Ok(value)) => value,
-            _ => return Err("invalid command".into()),
+            _ => return err!("invalid command"),
         };
         match command {
             "forward" => submarine.forward(value),
             "down" => submarine.down(value),
             "up" => submarine.up(value),
-            _ => return Err("invalid command".into()),
+            _ => return err!("invalid command"),
         }
     }
     Ok(())

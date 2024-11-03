@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2021;
 pub const DAY: u32 = 3;
@@ -25,17 +25,17 @@ fn parse_report(input: &str) -> Result<Report> {
             match char {
                 '0' => number.push(Bit::Zero),
                 '1' => number.push(Bit::One),
-                _ => return Err(format!("invalid bit '{}'", char.escape_debug()).into()),
+                _ => return err!("invalid bit '{}'", char.escape_debug()),
             }
         }
         numbers.push(number);
     }
     if numbers.is_empty() {
-        return Err("invalid input: empty".into());
+        return err!("invalid input: empty");
     }
     let len = numbers[0].len();
     if !numbers.iter().all(|n| n.len() == len) {
-        return Err("invalid input: different number of digits per number".into());
+        return err!("invalid input: different number of digits per number");
     }
     let report = Report::new(numbers);
     Ok(report)

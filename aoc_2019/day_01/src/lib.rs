@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2019;
 pub const DAY: u32 = 1;
@@ -8,7 +8,7 @@ pub fn part_one(input: &str) -> Result<u32> {
     for mass in input.trim().lines() {
         let mass = match mass.parse() {
             Ok(mass) => mass,
-            Err(_) => return Err(format!("invalid mass: '{}'", mass).into()),
+            Err(_) => return err!("invalid mass: '{}'", mass),
         };
         fuel += fuel_requirement(mass);
     }
@@ -20,7 +20,7 @@ pub fn part_two(input: &str) -> Result<i32> {
     for mass in input.trim().lines() {
         let mass = match mass.parse() {
             Ok(mass) => mass,
-            Err(_) => return Err(format!("invalid mass: '{}'", mass).into()),
+            Err(_) => return err!("invalid mass: '{}'", mass),
         };
         fuel += recursive_fuel_requirement(mass);
     }

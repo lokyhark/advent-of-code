@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2016;
 pub const DAY: u32 = 6;

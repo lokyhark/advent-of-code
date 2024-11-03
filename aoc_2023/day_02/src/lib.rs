@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2023;
 pub const DAY: u32 = 2;
@@ -17,7 +17,7 @@ pub fn part_one(input: &str) -> Result<u32> {
                     "red" => Color::Red,
                     "green" => Color::Green,
                     "blue" => Color::Blue,
-                    _ => panic!("invalid color: {}", color),
+                    _ => return err!("invalid color: {}", color),
                 };
                 if cubes > color.max() {
                     continue 'game;
@@ -42,7 +42,7 @@ pub fn part_two(input: &str) -> Result<u32> {
                     "red" => Color::Red,
                     "green" => Color::Green,
                     "blue" => Color::Blue,
-                    _ => panic!("invalid color: {}", color),
+                    _ => return err!("invalid color: {}", color),
                 };
                 bag.update(cubes, color);
             }

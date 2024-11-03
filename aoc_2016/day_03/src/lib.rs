@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2016;
 pub const DAY: u32 = 3;
@@ -11,8 +11,8 @@ pub fn part_one(input: &str) -> Result<usize> {
         for side in &mut sides {
             match split.next().map(|x| x.parse()) {
                 Some(Ok(x)) => *side = x,
-                Some(Err(_)) => return Err("invalid side length".into()),
-                None => return Err("invalid triangle".into()),
+                Some(Err(_)) => return err!("invalid side length"),
+                None => return err!("invalid triangle"),
             }
         }
         if is_triangle_possible(sides) {
@@ -30,14 +30,14 @@ pub fn part_two(input: &str) -> Result<usize> {
         for i in 0..3 {
             let line = match lines.next() {
                 Some(line) => line,
-                None => return Err("invalid number of lines".into()),
+                None => return err!("invalid number of lines"),
             };
             let mut split = line.split_ascii_whitespace();
             for side in &mut sides {
                 match split.next().map(|x| x.parse()) {
                     Some(Ok(x)) => side[i] = x,
-                    Some(Err(_)) => return Err("invalid side length".into()),
-                    None => return Err("invalid triangle".into()),
+                    Some(Err(_)) => return err!("invalid side length"),
+                    None => return err!("invalid triangle"),
                 }
             }
         }

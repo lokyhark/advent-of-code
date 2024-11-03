@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2022;
 pub const DAY: u32 = 8;
@@ -18,7 +18,7 @@ fn parse_input(input: &str) -> Result<Forest> {
     let mut size = 0;
     for line in input.lines() {
         for char in line.chars() {
-            let height = char.to_digit(10).map(|x| x as u8).ok_or::<String>("invalid forest".into())?;
+            let height = char.to_digit(10).map(|x| x as u8).ok_or(error!("invalid forest"))?;
             trees.push(height);
         }
         size += 1;

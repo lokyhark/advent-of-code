@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2021;
 pub const DAY: u32 = 4;
@@ -15,7 +15,7 @@ pub fn part_one(input: &str) -> Result<u32> {
             }
         }
     }
-    Err("no bingo".into())
+    err!("no bingo")
 }
 
 pub fn part_two(input: &str) -> Result<u32> {
@@ -35,16 +35,16 @@ pub fn part_two(input: &str) -> Result<u32> {
             }
         }
     }
-    Err("no bingo".into())
+    err!("no bingo")
 }
 
 fn parse_input(input: &str) -> Result<(Vec<u32>, Vec<Grid>)> {
     let mut lines = input.lines().peekable();
     let mut stack: Vec<_> = match lines.next() {
-        None => return Err("invalid input".into()),
+        None => return err!("invalid input"),
         Some(line) => match line.split(',').map(|x| x.parse()).collect() {
             Ok(stack) => stack,
-            Err(_) => return Err("invalid input".into()),
+            Err(_) => return err!("invalid input"),
         },
     };
     stack.reverse();
@@ -56,14 +56,14 @@ fn parse_input(input: &str) -> Result<(Vec<u32>, Vec<Grid>)> {
         for row in 0..size {
             let line = match lines.next() {
                 Some(line) => line,
-                None => return Err("invalid grid".into()),
+                None => return err!("invalid grid"),
             };
             for (col, value) in line.split_ascii_whitespace().enumerate() {
                 match value.parse::<u32>() {
                     Ok(value) => {
                         grid.insert(row, col, value)?;
                     }
-                    Err(_) => return Err("invalid grid".into()),
+                    Err(_) => return err!("invalid grid"),
                 };
             }
         }
@@ -86,11 +86,11 @@ impl Grid {
 
     fn insert(&mut self, row: usize, col: usize, value: u32) -> Result<()> {
         if row > self.size || col >= self.size {
-            return Err(format!("invalid slot ({}, {}) for gird of size {}", row, col, self.size).into());
+            return err!("invalid slot ({}, {})", row, col);
         }
         let slot = Slot { row, col, mark: false };
         if self.slots.insert(value, slot).is_some() {
-            return Err(format!("duplicate value in grid: {}", value).into());
+            return err!("duplicate value in grid: {}", value);
         }
         Ok(())
     }

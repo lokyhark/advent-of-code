@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2022;
 pub const DAY: u32 = 7;
@@ -15,13 +15,13 @@ pub fn part_two(input: &str) -> Result<usize> {
     let filesystem = parse_input(input)?;
     let full = match filesystem.size("/") {
         Some(size) => size,
-        None => return Err("root directory not found".into()),
+        None => return err!("root directory not found"),
     };
     let free = 70_000_000 - full;
     let remain = 30_000_000 - free;
     match filesystem.sizes().filter(|size| *size > remain).min() {
         Some(size) => Ok(size),
-        None => Err("directory big enough not found".into()),
+        None => err!("directory big enough not found"),
     }
 }
 
@@ -29,7 +29,7 @@ fn parse_input(input: &str) -> Result<FileSystem> {
     let mut filesystem = FileSystem::default();
     let mut path = Path::default();
     let mut lines = input.lines();
-    let mut last = lines.next().ok_or::<String>("invalid filesystem".into())?;
+    let mut last = lines.next().ok_or(error!("invalid filesystem"))?;
     'outer: loop {
         let mut split = last.split_ascii_whitespace();
         match split.nth(1) {
@@ -50,22 +50,22 @@ fn parse_input(input: &str) -> Result<FileSystem> {
                         filesystem.insert_file(&path, file);
                     }
                     Some("dir") => {
-                        let name = split.next().ok_or::<String>("invalid file name".into())?;
+                        let name = split.next().ok_or(error!("invalid file name"))?;
                         filesystem.insert_dir(&path, name)
                     }
-                    _ => return Err("invalid filesystem".into()),
+                    _ => return err!("invalid filesystem"),
                 }
             },
             Some("cd") => {
-                let name = split.next().ok_or::<String>("invalid file name".into())?;
+                let name = split.next().ok_or(error!("invalid file name"))?;
                 if name == ".." {
                     path.pop();
                 } else {
                     path.push(name);
                 }
-                last = lines.next().ok_or::<String>("invalid filesystem".into())?;
+                last = lines.next().ok_or(error!("invalid filesystem"))?;
             }
-            _ => return Err("invalid command".into()),
+            _ => return err!("invalid command"),
         }
     }
     Ok(filesystem)

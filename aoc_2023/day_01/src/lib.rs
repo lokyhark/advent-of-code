@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2023;
 pub const DAY: u32 = 1;
@@ -56,8 +56,8 @@ pub fn part_two(input: &str) -> Result<u32> {
         let right = digit.unwrap_or(left);
 
         // Parse
-        let left = parse_digit(left);
-        let right = parse_digit(right);
+        let left = parse_digit(left)?;
+        let right = parse_digit(right)?;
 
         // Sum
         let val = left * 10 + right;
@@ -66,8 +66,8 @@ pub fn part_two(input: &str) -> Result<u32> {
     Ok(sum)
 }
 
-pub fn parse_digit(digit: &str) -> u32 {
-    match digit.as_bytes() {
+pub fn parse_digit(digit: &str) -> Result<u32> {
+    let digit = match digit.as_bytes() {
         b"1" | b"one" => 1,
         b"2" | b"two" => 2,
         b"3" | b"three" => 3,
@@ -77,8 +77,9 @@ pub fn parse_digit(digit: &str) -> u32 {
         b"7" | b"seven" => 7,
         b"8" | b"eight" => 8,
         b"9" | b"nine" => 9,
-        _ => panic!("invalid digit"),
-    }
+        _ => return err!("invalid digit"),
+    };
+    Ok(digit)
 }
 
 #[test]

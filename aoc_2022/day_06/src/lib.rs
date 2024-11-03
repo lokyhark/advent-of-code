@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2022;
 pub const DAY: u32 = 6;
@@ -20,7 +20,7 @@ fn marker_position(input: &str, size: usize) -> Result<usize> {
             return Ok(size + idx);
         }
     }
-    Err("packet marker not found".into())
+    err!("packet marker not found")
 }
 
 #[test]

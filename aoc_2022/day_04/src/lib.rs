@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2022;
 pub const DAY: u32 = 4;
@@ -29,11 +29,11 @@ fn parse_section(slice: &str) -> Result<Section> {
     let mut split = slice.split(',');
     let left = match split.next() {
         Some(slice) => parse_range(slice)?,
-        _ => return Err("invalid section".into()),
+        _ => return err!("invalid section"),
     };
     let right = match split.next() {
         Some(slice) => parse_range(slice)?,
-        _ => return Err("invalid section".into()),
+        _ => return err!("invalid section"),
     };
     Ok(Section { left, right })
 }
@@ -42,11 +42,11 @@ fn parse_range(slice: &str) -> Result<Range> {
     let mut split = slice.split('-');
     let start = match split.next().map(|x| x.parse::<u32>()) {
         Some(Ok(start)) => start,
-        _ => return Err("invalid range".into()),
+        _ => return err!("invalid range"),
     };
     let end = match split.next().map(|x| x.parse::<u32>()) {
         Some(Ok(end)) => end,
-        _ => return Err("invalid range".into()),
+        _ => return err!("invalid range"),
     };
     Ok(Range { start, end })
 }
