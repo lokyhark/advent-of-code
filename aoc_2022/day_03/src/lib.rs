@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2022;
 pub const DAY: u32 = 3;
@@ -18,7 +18,7 @@ pub fn part_one(input: &str) -> Result<u32> {
         if let [&item] = left.intersection(&right).collect::<Vec<_>>().as_slice() {
             sum += priority(item)?;
         } else {
-            return Err("multiple items appear in the two compartment".into());
+            return err!("multiple items appear in the two compartment");
         }
     }
     Ok(sum)
@@ -38,7 +38,7 @@ pub fn part_two(input: &str) -> Result<u32> {
         if let [item] = set.into_iter().collect::<Vec<_>>().as_slice() {
             sum += priority(*item)?;
         } else {
-            return Err("multiple items appear in the two compartment".into());
+            return err!("multiple items appear in the two compartment");
         }
     }
     Ok(sum)
@@ -48,7 +48,7 @@ fn priority(byte: u8) -> Result<u32> {
     match byte {
         b @ b'a'..=b'z' => Ok((b - b'a' + 1) as u32),
         b @ b'A'..=b'Z' => Ok((b - b'A' + 27) as u32),
-        _ => Err(format!("invalid priority: {}", byte.escape_ascii()).into()),
+        _ => err!("invalid priority: {}", byte.escape_ascii()),
     }
 }
 

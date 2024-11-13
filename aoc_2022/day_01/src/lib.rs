@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2022;
 pub const DAY: u32 = 1;
@@ -7,7 +7,7 @@ pub fn part_one(input: &str) -> Result<u32> {
     let vec = parse_list(input)?;
     match vec.iter().max() {
         Some(max) => Ok(*max),
-        None => Err("invalid calories list".into()),
+        None => err!("invalid calories list"),
     }
 }
 
@@ -29,7 +29,7 @@ pub fn parse_list(input: &str) -> Result<Vec<u32>> {
         } else {
             calories += match line.trim().parse::<u32>() {
                 Ok(value) => value,
-                Err(_) => return Err(format!("invalid calories number: {}", line).into()),
+                Err(_) => return err!("invalid calories number: {}", line),
             }
         }
     }

@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2020;
 pub const DAY: u32 = 1;
@@ -10,7 +10,7 @@ pub fn part_one(input: &str) -> Result<i32> {
     for expense in input.trim().lines() {
         let expense = match expense.parse::<i32>() {
             Ok(expense) => expense,
-            Err(_) => return Err(format!("invalid expense: '{}", expense).into()),
+            Err(_) => return err!("invalid expense: '{}", expense),
         };
         report.insert(expense);
     }
@@ -19,7 +19,7 @@ pub fn part_one(input: &str) -> Result<i32> {
             return Ok(x * y);
         }
     }
-    Err("complement expenses not found".into())
+    err!("complement expenses not found")
 }
 
 pub fn part_two(input: &str) -> Result<i32> {
@@ -27,7 +27,7 @@ pub fn part_two(input: &str) -> Result<i32> {
     for expense in input.trim().lines() {
         let expense = match expense.parse::<i32>() {
             Ok(expense) => expense,
-            Err(_) => return Err(format!("invalid expense: '{}", expense).into()),
+            Err(_) => return err!("invalid expense: '{}", expense),
         };
         report.insert(expense);
     }
@@ -38,7 +38,7 @@ pub fn part_two(input: &str) -> Result<i32> {
             }
         }
     }
-    Err("complement expenses not found".into())
+    err!("complement expenses not found")
 }
 
 #[test]

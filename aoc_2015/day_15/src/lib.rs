@@ -1,6 +1,6 @@
 use std::cmp::max;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 15;
@@ -40,28 +40,28 @@ fn parse_input(input: &str) -> Result<Vec<Ingredient>> {
     for line in input.lines() {
         let (_, properties) = match line.split_once(':') {
             Some(split) => split,
-            None => return Err("invalid input".into()),
+            None => return err!("invalid input"),
         };
         let mut split = properties.split_ascii_whitespace().skip(1).step_by(2);
         let capacity = match split.next().map(|x| x.trim_end_matches(',')).map(|x| x.parse::<i32>()) {
             Some(Ok(capacity)) => capacity,
-            _ => return Err("invalid input".into()),
+            _ => return err!("invalid input"),
         };
         let durability = match split.next().map(|x| x.trim_end_matches(',')).map(|x| x.parse::<i32>()) {
             Some(Ok(durability)) => durability,
-            _ => return Err("invalid input".into()),
+            _ => return err!("invalid input"),
         };
         let flavor = match split.next().map(|x| x.trim_end_matches(',')).map(|x| x.parse::<i32>()) {
             Some(Ok(flavor)) => flavor,
-            _ => return Err("invalid input".into()),
+            _ => return err!("invalid input"),
         };
         let texture = match split.next().map(|x| x.trim_end_matches(',')).map(|x| x.parse::<i32>()) {
             Some(Ok(texture)) => texture,
-            _ => return Err("invalid input".into()),
+            _ => return err!("invalid input"),
         };
         let calories = match split.next().map(|x| x.trim_end_matches(',')).map(|x| x.parse::<i32>()) {
             Some(Ok(calories)) => calories,
-            _ => return Err("invalid input".into()),
+            _ => return err!("invalid input"),
         };
         let ingredient = Ingredient {
             capacity,

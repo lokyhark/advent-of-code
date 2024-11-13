@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 6;
@@ -40,7 +40,7 @@ fn parse_instruction(line: &str) -> Result<(Action, Range)> {
         let (from, to) = parse_range(line, 1)?;
         (Action::Toggle, from, to)
     } else {
-        return Err(format!("invalid instruction: '{}'", line).into());
+        return err!("invalid instruction: '{}'", line);
     };
     let (xmin, ymin) = parse_indices(from)?;
     let (xmax, ymax) = parse_indices(to)?;
@@ -52,11 +52,11 @@ fn parse_range(instruction: &str, skip: usize) -> Result<(&str, &str)> {
     let mut iter = instruction.split_whitespace().skip(skip);
     let from = match iter.next() {
         Some(from) => from,
-        None => return Err(format!("invalid instruction: '{}'", instruction).into()),
+        None => return err!("invalid instruction: '{}'", instruction),
     };
     let to = match iter.nth(1) {
         Some(to) => to,
-        None => return Err(format!("invalid instruction: '{}'", instruction).into()),
+        None => return err!("invalid instruction: '{}'", instruction),
     };
     Ok((from, to))
 }
@@ -64,15 +64,15 @@ fn parse_range(instruction: &str, skip: usize) -> Result<(&str, &str)> {
 fn parse_indices(str: &str) -> Result<(usize, usize)> {
     let (x, y) = match str.split_once(',') {
         Some((x, y)) => (x, y),
-        None => return Err(format!("invalid indices: '{}'", str).into()),
+        None => return err!("invalid indices: '{}'", str),
     };
     let x = match x.parse() {
         Ok(x) => x,
-        Err(_) => return Err(format!("invalid index: '{}'", x).into()),
+        Err(_) => return err!("invalid index: '{}'", x),
     };
     let y = match y.parse() {
         Ok(y) => y,
-        Err(_) => return Err(format!("invalid index: '{}'", x).into()),
+        Err(_) => return err!("invalid index: '{}'", x),
     };
     Ok((x, y))
 }

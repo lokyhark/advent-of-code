@@ -2,7 +2,7 @@ use std::fmt::Write;
 
 use md5::{digest::generic_array::GenericArray, Digest, Md5};
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 4;

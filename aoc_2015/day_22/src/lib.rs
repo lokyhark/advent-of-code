@@ -3,7 +3,7 @@ use std::{
     collections::BinaryHeap,
 };
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 22;
@@ -11,14 +11,14 @@ pub const DAY: u32 = 22;
 pub fn part_one(input: &str) -> Result<i32> {
     let wizard = Wizard::new(50, 500);
     let boss = parse_boss(input);
-    let combat = search(wizard, boss, false);
+    let combat = search(wizard, boss, false)?;
     Ok(combat.mana)
 }
 
 pub fn part_two(input: &str) -> Result<i32> {
     let wizard = Wizard::new(50, 500);
     let boss = parse_boss(input);
-    let combat = search(wizard, boss, true);
+    let combat = search(wizard, boss, true)?;
     Ok(combat.mana)
 }
 
@@ -29,18 +29,18 @@ fn parse_boss(input: &str) -> Boss {
     Boss::new(health, damage)
 }
 
-fn search(wizard: Wizard, boss: Boss, hard: bool) -> Combat {
+fn search(wizard: Wizard, boss: Boss, hard: bool) -> Result<Combat> {
     let combat = Combat::new(wizard, boss);
     let mut queue = BinaryHeap::from([combat.clone()]);
     while let Some(combat) = queue.pop() {
         if combat.boss.health <= 0 {
-            return combat;
+            return Ok(combat);
         }
         for combat in rounds(&combat, hard) {
             queue.push(combat);
         }
     }
-    panic!("search not found")
+    err!("search not found")
 }
 
 fn rounds(combat: &Combat, hard: bool) -> Vec<Combat> {

@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 use aoc_2022_day_06::*;
 

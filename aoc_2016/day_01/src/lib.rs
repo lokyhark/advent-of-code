@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2016;
 pub const DAY: u32 = 1;
@@ -11,11 +11,11 @@ pub fn part_one(input: &str) -> Result<i32> {
         match instruction.chars().next() {
             Some('L') => position.turn_left(),
             Some('R') => position.turn_right(),
-            _ => return Err(format!("invalid instruction: '{}'", instruction).into()),
+            _ => return err!("invalid instruction: '{}'", instruction),
         }
         let blocks = match instruction.get(1..).map(|str| str.parse()) {
             Some(Ok(x)) => x,
-            _ => return Err(format!("invalid instruction: '{}'", instruction).into()),
+            _ => return err!("invalid instruction: '{}'", instruction),
         };
         position.walk(blocks);
     }
@@ -29,11 +29,11 @@ pub fn part_two(input: &str) -> Result<i32> {
         match instruction.chars().next() {
             Some('L') => position.turn_left(),
             Some('R') => position.turn_right(),
-            _ => return Err(format!("invalid instruction: '{}'", instruction).into()),
+            _ => return err!("invalid instruction: '{}'", instruction),
         }
         let blocks = match instruction.get(1..).map(|str| str.parse()) {
             Some(Ok(x)) => x,
-            _ => return Err(format!("invalid instruction: '{}'", instruction).into()),
+            _ => return err!("invalid instruction: '{}'", instruction),
         };
         for _ in 0..blocks {
             position.step();
@@ -42,7 +42,7 @@ pub fn part_two(input: &str) -> Result<i32> {
             }
         }
     }
-    Err("Easter Bunny HQ not found".into())
+    err!("Easter Bunny HQ not found")
 }
 
 #[derive(Clone, Copy, Debug)]

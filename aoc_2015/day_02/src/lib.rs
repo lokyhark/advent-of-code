@@ -1,6 +1,4 @@
-use std::{error::Error, str::FromStr};
-
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 2;
@@ -8,7 +6,7 @@ pub const DAY: u32 = 2;
 pub fn part_one(input: &str) -> Result<u32> {
     let mut paper = 0;
     for line in input.trim().lines() {
-        let present: Present = line.parse()?;
+        let present: Present = parse_present(line)?;
         paper += present.paper();
     }
     Ok(paper)
@@ -17,10 +15,27 @@ pub fn part_one(input: &str) -> Result<u32> {
 pub fn part_two(input: &str) -> Result<u32> {
     let mut ribbon = 0;
     for line in input.trim().lines() {
-        let present: Present = line.parse()?;
+        let present: Present = parse_present(line)?;
         ribbon += present.ribbon();
     }
     Ok(ribbon)
+}
+
+fn parse_present(line: &str) -> Result<Present> {
+    let mut split = line.trim().split('x');
+    let length = match split.next().map(|x| x.parse()) {
+        Some(Ok(length)) => length,
+        _ => return err!("invalid present dimensions '{}'", line.trim()),
+    };
+    let width = match split.next().map(|x| x.parse()) {
+        Some(Ok(width)) => width,
+        _ => return err!("invalid present dimensions '{}'", line.trim()),
+    };
+    let height = match split.next().map(|x| x.parse()) {
+        Some(Ok(height)) => height,
+        _ => return err!("invalid present dimensions '{}'", line.trim()),
+    };
+    Ok(Present { length, width, height })
 }
 
 struct Present {
@@ -41,47 +56,26 @@ impl Present {
     }
 }
 
-impl FromStr for Present {
-    type Err = Box<dyn Error>;
-
-    fn from_str(s: &str) -> Result<Self> {
-        let mut split = s.trim().split('x');
-        let length = match split.next().map(|x| x.parse()) {
-            Some(Ok(length)) => length,
-            _ => return Err(format!("invalid present dimensions '{}'", s.trim()).into()),
-        };
-        let width = match split.next().map(|x| x.parse()) {
-            Some(Ok(width)) => width,
-            _ => return Err(format!("invalid present dimensions '{}'", s.trim()).into()),
-        };
-        let height = match split.next().map(|x| x.parse()) {
-            Some(Ok(height)) => height,
-            _ => return Err(format!("invalid present dimensions '{}'", s.trim()).into()),
-        };
-        Ok(Present { length, width, height })
-    }
-}
-
 #[test]
 fn part_one_example1() -> Result<()> {
-    assert_eq!("2x3x4".parse::<Present>()?.paper(), 58);
+    assert_eq!(parse_present("2x3x4")?.paper(), 58);
     Ok(())
 }
 
 #[test]
 fn part_one_example2() -> Result<()> {
-    assert_eq!("1x1x10".parse::<Present>()?.paper(), 43);
+    assert_eq!(parse_present("1x1x10")?.paper(), 43);
     Ok(())
 }
 
 #[test]
 fn part_two_example1() -> Result<()> {
-    assert_eq!("2x3x4".parse::<Present>()?.ribbon(), 34);
+    assert_eq!(parse_present("2x3x4")?.ribbon(), 34);
     Ok(())
 }
 
 #[test]
 fn part_two_example2() -> Result<()> {
-    assert_eq!("1x1x10".parse::<Present>()?.ribbon(), 14);
+    assert_eq!(parse_present("1x1x10")?.ribbon(), 14);
     Ok(())
 }

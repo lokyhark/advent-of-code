@@ -1,14 +1,14 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2020;
 pub const DAY: u32 = 3;
 
 pub fn part_one(input: &str) -> Result<usize> {
-    let map = parse_map(input.trim());
+    let map = parse_map(input.trim())?;
     let mut pos = Position::default();
     let mut trees = 0;
     while pos.row < map.rows() {
-        if let Kind::Tree = map.get(pos) {
+        if let Ok(Kind::Tree) = map.get(pos) {
             trees += 1
         }
         pos.slope(1, 3);
@@ -17,13 +17,13 @@ pub fn part_one(input: &str) -> Result<usize> {
 }
 
 pub fn part_two(input: &str) -> Result<usize> {
-    let map = parse_map(input.trim());
+    let map = parse_map(input.trim())?;
     let mut count = 1;
     for slope in [(1, 1), (1, 3), (1, 5), (1, 7), (2, 1)] {
         let mut pos = Position::default();
         let mut trees = 0;
         while pos.row < map.rows() {
-            if let Kind::Tree = map.get(pos) {
+            if let Ok(Kind::Tree) = map.get(pos) {
                 trees += 1
             }
             pos.slope(slope.0, slope.1);
@@ -33,7 +33,7 @@ pub fn part_two(input: &str) -> Result<usize> {
     Ok(count)
 }
 
-fn parse_map(input: &str) -> Map {
+fn parse_map(input: &str) -> Result<Map> {
     let mut bytes = Vec::new();
     let mut lines = input.lines();
     let line = lines.next().expect("invalid map");
@@ -45,7 +45,11 @@ fn parse_map(input: &str) -> Map {
         rows += 1;
     }
     let shape = (rows, cols);
-    Map { bytes, shape }
+    if bytes.iter().all(|&x| x == b'#' || x == b'.') {
+        Ok(Map { bytes, shape })
+    } else {
+        err!("invalid map")
+    }
 }
 
 #[derive(Debug)]
@@ -59,17 +63,17 @@ impl Map {
         self.shape.0
     }
 
-    fn get(&self, position: Position) -> Kind {
+    fn get(&self, position: Position) -> Result<Kind> {
         assert!(position.row < self.shape.0);
         let start = position.row * self.shape.1;
         let col = position.col % self.shape.1;
         match self.bytes.get(start + col) {
             Some(byte) => match byte {
-                b'.' => Kind::Open,
-                b'#' => Kind::Tree,
-                _ => panic!("invalid kind"),
+                b'.' => Ok(Kind::Open),
+                b'#' => Ok(Kind::Tree),
+                _ => err!("invalid kind: {}", byte),
             },
-            None => panic!("invalid position"),
+            None => err!("invalid position"),
         }
     }
 }

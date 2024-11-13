@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 3;
@@ -42,7 +42,7 @@ impl Location {
             '<' => self.0 -= 1,
             '^' => self.1 += 1,
             'v' => self.1 -= 1,
-            _ => return Err(format!("invalid move: '{}'", step.escape_default()).into()),
+            _ => return err!("invalid move: '{}'", step.escape_default()),
         }
         Ok(())
     }

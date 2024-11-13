@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 8;
@@ -31,11 +31,11 @@ fn string_size(str: &str) -> Result<usize> {
     let mut size = 0;
     let str = match str.strip_prefix('"') {
         Some(str) => str,
-        None => return Err(format!("invalid string: '{}'", str).into()),
+        None => return err!("invalid string: '{}'", str),
     };
     let str = match str.strip_suffix('"') {
         Some(str) => str,
-        None => return Err(format!("invalid string: '{}'", str).into()),
+        None => return err!("invalid string: '{}'", str),
     };
     let mut iter = str.bytes().peekable();
     while let Some(next) = iter.next() {
@@ -47,7 +47,7 @@ fn string_size(str: &str) -> Result<usize> {
                 Some(b'x') => {
                     iter.nth(2);
                 }
-                _ => return Err(format!("invalid string: '{}'", str).into()),
+                _ => return err!("invalid string: '{}'", str),
             }
         }
         size += 1;

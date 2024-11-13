@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2023;
 pub const DAY: u32 = 3;

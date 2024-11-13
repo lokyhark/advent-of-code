@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 use aoc_2019_day_01::*;
 

@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 use md5::{digest::generic_array::GenericArray, Digest, Md5};
 use std::fmt::Write;
 

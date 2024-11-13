@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2022;
 pub const DAY: u32 = 2;
@@ -27,13 +27,13 @@ fn parse_round_one(line: &str) -> Result<(Shape, Shape)> {
         Some("A") => Shape::Rock,
         Some("B") => Shape::Paper,
         Some("C") => Shape::Scissors,
-        _ => return Err(format!("invalid shapes: {}", line).into()),
+        _ => return err!("invalid shapes: {}", line),
     };
     let right = match split.next() {
         Some("X") => Shape::Rock,
         Some("Y") => Shape::Paper,
         Some("Z") => Shape::Scissors,
-        _ => return Err(format!("invalid shapes: {}", line).into()),
+        _ => return err!("invalid shapes: {}", line),
     };
     Ok((left, right))
 }
@@ -44,7 +44,7 @@ fn parse_round_two(line: &str) -> Result<(Shape, Shape)> {
         Some("A") => Shape::Rock,
         Some("B") => Shape::Paper,
         Some("C") => Shape::Scissors,
-        _ => return Err(format!("invalid shapes: {}", line).into()),
+        _ => return err!("invalid shapes: {}", line),
     };
     let right = match split.next() {
         Some("X") => match left {
@@ -58,7 +58,7 @@ fn parse_round_two(line: &str) -> Result<(Shape, Shape)> {
             Shape::Paper => Shape::Scissors,
             Shape::Scissors => Shape::Rock,
         },
-        _ => return Err(format!("invalid shapes: {}", line).into()),
+        _ => return err!("invalid shapes: {}", line),
     };
     Ok((left, right))
 }

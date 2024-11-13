@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2017;
 pub const DAY: u32 = 1;
@@ -12,7 +12,7 @@ pub fn part_one(input: &str) -> Result<u32> {
         if iter.peek() == Some(&digit) {
             sum += match digit.to_digit(10) {
                 Some(digit) => digit,
-                None => return Err(format!("invalid digit '{}'", digit.escape_default()).into()),
+                None => return err!("invalid digit '{}'", digit.escape_default()),
             }
         }
     }
@@ -29,7 +29,7 @@ pub fn part_two(input: &str) -> Result<u32> {
         if sequence[halfway] == *digit {
             sum += match digit.to_digit(10) {
                 Some(digit) => digit,
-                None => return Err(format!("invalid digit '{}'", digit.escape_default()).into()),
+                None => return err!("invalid digit '{}'", digit.escape_default()),
             }
         }
     }

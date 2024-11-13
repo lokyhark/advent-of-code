@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use itertools::Itertools;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 13;
@@ -31,16 +31,16 @@ fn table(input: &str) -> Result<HashMap<&str, HashMap<&str, i32>>> {
         let mut split = line.split_ascii_whitespace();
         let guest = match split.next() {
             Some(name) => table.entry(name).or_insert_with(HashMap::new),
-            None => return Err("invalid input".into()),
+            None => return err!("invalid input"),
         };
         let negative = match split.nth(1) {
             Some("gain") => false,
             Some("lose") => true,
-            _ => return Err("invalid input".into()),
+            _ => return err!("invalid input"),
         };
         let happiness = match split.next().map(|x| x.parse::<i32>()) {
             Some(Ok(happiness)) => happiness,
-            _ => return Err("invalid input".into()),
+            _ => return err!("invalid input"),
         };
         match split.next_back() {
             Some(name) => {
@@ -50,7 +50,7 @@ fn table(input: &str) -> Result<HashMap<&str, HashMap<&str, i32>>> {
                     guest.insert(name, happiness)
                 }
             }
-            None => return Err("invalid input".into()),
+            None => return err!("invalid input"),
         };
     }
     Ok(table)

@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2016;
 pub const DAY: u32 = 4;
@@ -8,7 +8,7 @@ pub const DAY: u32 = 4;
 pub fn part_one(input: &str) -> Result<u32> {
     let mut sum: u32 = 0;
     for line in input.trim().lines() {
-        let room: Room = line.trim().try_into()?;
+        let room: Room = parse_room(line.trim())?;
         if room.is_real() {
             sum += room.id;
         }
@@ -18,12 +18,37 @@ pub fn part_one(input: &str) -> Result<u32> {
 
 pub fn part_two(input: &str) -> Result<u32> {
     for line in input.trim().lines() {
-        let room: Room = line.trim().try_into()?;
+        let room: Room = parse_room(line.trim())?;
         if room.real_name() == "northpole object storage" {
             return Ok(room.id);
         }
     }
-    Err("northpole object storage not found".into())
+    err!("northpole object storage not found")
+}
+
+fn parse_room(value: &str) -> Result<Room> {
+    let mut start = 0;
+    let mut stop = match value.rfind('-') {
+        Some(index) => index,
+        None => return err!("invalid room identifier {value}"),
+    };
+    let name = &value[start..stop];
+    start = stop + 1;
+    stop = match value.find('[') {
+        Some(index) => index,
+        None => return err!("invalid room name {value}"),
+    };
+    let id: u32 = match value[start..stop].parse() {
+        Ok(id) => id,
+        Err(_) => return err!("invalid room identiufier {value}"),
+    };
+    start = stop + 1;
+    stop = match value.rfind(']') {
+        Some(index) => index,
+        _ => return err!("invalid room checksum {value}"),
+    };
+    let checksum = &value[start..stop];
+    Ok(Room { name, id, checksum })
 }
 
 #[derive(Debug, Eq, PartialEq)]
@@ -65,35 +90,6 @@ impl<'a> Room<'a> {
     }
 }
 
-impl<'a> TryFrom<&'a str> for Room<'a> {
-    type Error = String;
-
-    fn try_from(value: &'a str) -> std::result::Result<Self, Self::Error> {
-        let mut start = 0;
-        let mut stop = match value.rfind('-') {
-            Some(index) => index,
-            None => return Err("invalid room identifier {value}".into()),
-        };
-        let name = &value[start..stop];
-        start = stop + 1;
-        stop = match value.find('[') {
-            Some(index) => index,
-            None => return Err("invalid room name {value}".into()),
-        };
-        let id: u32 = match value[start..stop].parse() {
-            Ok(id) => id,
-            Err(_) => return Err("invalid room identiufier {value}".into()),
-        };
-        start = stop + 1;
-        stop = match value.rfind(']') {
-            Some(index) => index,
-            _ => return Err("invalid room checksum {value}".into()),
-        };
-        let checksum = &value[start..stop];
-        Ok(Room { name, id, checksum })
-    }
-}
-
 #[test]
 fn part_one_example() -> Result<()> {
     let rooms = "
@@ -108,7 +104,7 @@ fn part_one_example() -> Result<()> {
 
 #[test]
 fn part_one_example1() -> Result<()> {
-    let room = Room::try_from("aaaaa-bbb-z-y-x-123[abxyz]")?;
+    let room = parse_room("aaaaa-bbb-z-y-x-123[abxyz]")?;
     assert_eq!(
         room,
         Room {
@@ -123,7 +119,7 @@ fn part_one_example1() -> Result<()> {
 
 #[test]
 fn part_one_example2() -> Result<()> {
-    let room = Room::try_from("a-b-c-d-e-f-g-h-987[abcde]")?;
+    let room = parse_room("a-b-c-d-e-f-g-h-987[abcde]")?;
     assert_eq!(
         room,
         Room {
@@ -138,7 +134,7 @@ fn part_one_example2() -> Result<()> {
 
 #[test]
 fn part_one_example3() -> Result<()> {
-    let room = Room::try_from("not-a-real-room-404[oarel]")?;
+    let room = parse_room("not-a-real-room-404[oarel]")?;
     assert_eq!(
         room,
         Room {
@@ -153,7 +149,7 @@ fn part_one_example3() -> Result<()> {
 
 #[test]
 fn part_one_example4() -> Result<()> {
-    let room = Room::try_from("totally-real-room-200[decoy]")?;
+    let room = parse_room("totally-real-room-200[decoy]")?;
     assert_eq!(
         room,
         Room {
@@ -168,7 +164,7 @@ fn part_one_example4() -> Result<()> {
 
 #[test]
 fn part_two_example() -> Result<()> {
-    let room = Room::try_from("qzmt-zixmtkozy-ivhz-343[zimth]")?;
+    let room = parse_room("qzmt-zixmtkozy-ivhz-343[zimth]")?;
     assert!(room.is_real());
     assert_eq!(room.real_name(), "very encrypted name");
     Ok(())

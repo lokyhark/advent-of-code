@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 7;
@@ -10,7 +10,7 @@ pub fn part_one(input: &str) -> Result<u16> {
     solve(input.trim(), &mut signals, ["a"])?;
     match signals.get("a") {
         Some(signal) => Ok(*signal),
-        None => Err("signal 'a' not found".into()),
+        None => err!("signal 'a' not found"),
     }
 }
 
@@ -19,14 +19,14 @@ pub fn part_two(input: &str) -> Result<u16> {
     solve(input.trim(), &mut signals, ["a"])?;
     let signal = match signals.get("a") {
         Some(signal) => *signal,
-        None => return Err("signal 'a' not found".into()),
+        None => return err!("signal 'a' not found"),
     };
     signals.clear();
     signals.insert("b", signal);
     solve(input.trim(), &mut signals, ["a"])?;
     match signals.get("a") {
         Some(signal) => Ok(*signal),
-        None => Err("signal 'a' not found".into()),
+        None => err!("signal 'a' not found"),
     }
 }
 
@@ -37,7 +37,7 @@ fn solve<'a>(input: &'a str, signals: &mut HashMap<&'a str, u16>, wires: impl In
         let wire = *stack.last().unwrap();
         let gate = match circuit.get(wire) {
             Some(gate) => gate,
-            None => return Err(format!("gate not found '{}'", wire).into()),
+            None => return err!("gate not found '{}'", wire),
         };
         match gate {
             Gate::Set(connection) => {
@@ -149,7 +149,7 @@ fn circuit(circuit: &str) -> Result<HashMap<&str, Gate>> {
     for line in circuit.lines() {
         let (prefix, suffix) = match line.split_once("->") {
             Some(split) => split,
-            None => return Err(format!("invalid circuit: '{}'", line).into()),
+            None => return err!("invalid circuit: '{}'", line),
         };
         let gate = gate(prefix.trim())?;
         map.insert(suffix.trim(), gate);
@@ -161,52 +161,52 @@ fn gate(gate: &str) -> Result<Gate> {
     if gate.contains("NOT") {
         let connection = match gate.split_ascii_whitespace().nth(1) {
             Some(wire) => connection(wire),
-            None => return Err(format!("invalid gate: '{}'", gate).into()),
+            None => return err!("invalid gate: '{}'", gate),
         };
         Ok(Gate::Not(connection))
     } else if gate.contains("AND") || gate.contains("OR") {
         let mut iter = gate.split_ascii_whitespace();
         let left = match iter.next() {
             Some(left) => connection(left),
-            None => return Err(format!("invalid gate: '{}'", gate).into()),
+            None => return err!("invalid gate: '{}'", gate),
         };
         let operation = match iter.next() {
             Some(operation) => operation,
-            None => return Err(format!("invalid gate: '{}'", gate).into()),
+            None => return err!("invalid gate: '{}'", gate),
         };
         let right = match iter.next() {
             Some(right) => connection(right),
-            None => return Err(format!("invalid gate: '{}'", gate).into()),
+            None => return err!("invalid gate: '{}'", gate),
         };
         match operation {
             "OR" => Ok(Gate::Or(left, right)),
             "AND" => Ok(Gate::And(left, right)),
-            _ => Err(format!("invalid gate: '{}'", gate).into()),
+            _ => err!("invalid gate: '{}'", gate),
         }
     } else if gate.contains("SHIFT") {
         let mut iter = gate.split_ascii_whitespace();
         let left = match iter.next() {
             Some(left) => connection(left),
-            None => return Err(format!("invalid gate: '{}'", gate).into()),
+            None => return err!("invalid gate: '{}'", gate),
         };
         let operation = match iter.next() {
             Some(operation) => operation,
-            None => return Err(format!("invalid gate: '{}'", gate).into()),
+            None => return err!("invalid gate: '{}'", gate),
         };
         let right = match iter.next().map(|x| x.parse()) {
             Some(Ok(right)) => right,
-            _ => return Err(format!("invalid gate: '{}'", gate).into()),
+            _ => return err!("invalid gate: '{}'", gate),
         };
         match operation {
             "LSHIFT" => Ok(Gate::Lsh(left, right)),
             "RSHIFT" => Ok(Gate::Rsh(left, right)),
-            _ => Err(format!("invalid gate: '{}'", gate).into()),
+            _ => err!("invalid gate: '{}'", gate),
         }
     } else if gate.chars().all(|x| !x.is_ascii_whitespace()) {
         let connection = connection(gate);
         Ok(Gate::Set(connection))
     } else {
-        Err(format!("invalid gate: '{}'", gate).into())
+        err!("invalid gate: '{}'", gate)
     }
 }
 

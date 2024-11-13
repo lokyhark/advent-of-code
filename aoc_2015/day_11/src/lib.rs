@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 11;
@@ -44,13 +44,13 @@ fn next_password(password: &str) -> Result<String> {
                     carry = true;
                     new.push(b'a');
                 }
-                _ => return Err(format!("invalid bytes: '{}'", password).into()),
+                _ => return err!("invalid bytes: '{}'", password),
             }
         } else {
             match byte {
                 x @ (b'a'..=b'h' | b'j'..=b'k' | b'm'..=b'n' | b'p'..=b'z') => new.push(*x),
                 x @ (b'i' | b'l' | b'o') => new.push(*x + 1),
-                _ => return Err(format!("invalid bytes: '{}'", password).into()),
+                _ => return err!("invalid bytes: '{}'", password),
             }
         }
     }

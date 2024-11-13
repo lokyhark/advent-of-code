@@ -1,6 +1,6 @@
 use regex::Regex;
 
-use aoc::Result;
+use aoc::*;
 use serde_json::Value;
 
 pub const YEAR: u32 = 2015;
@@ -15,7 +15,7 @@ pub fn part_one(input: &str) -> Result<i64> {
 pub fn part_two(input: &str) -> Result<i64> {
     let json: Value = match serde_json::from_str(input.trim()) {
         Ok(json) => json,
-        Err(_) => return Err("invalid JSON input".into()),
+        Err(_) => return err!("invalid JSON input"),
     };
     let mut stack = vec![json];
     let mut sum = 0;
@@ -24,7 +24,7 @@ pub fn part_two(input: &str) -> Result<i64> {
             Value::Null | Value::Bool(_) | Value::String(_) => {}
             Value::Number(number) => match number.as_i64() {
                 Some(number) => sum += number,
-                None => return Err(format!("invalid JSON number: {}", number).into()),
+                None => return err!("invalid JSON number: {}", number),
             },
             Value::Array(values) => {
                 stack.extend_from_slice(&values);

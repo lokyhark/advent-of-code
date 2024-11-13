@@ -86,7 +86,7 @@ fn bin(path: &Path, crate_name: &str) -> Result<()> {
         "\
 use std::io::{{stdout, Write}};
 
-use aoc::Result;
+use aoc::*;
 
 use {}::*;
 
@@ -112,7 +112,7 @@ fn lib(path: &Path, year: u32, day: u32) -> Result<()> {
     let path = path.join("src/lib.rs");
     let contents = format!(
         "\
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = {};
 pub const DAY: u32 = {};
@@ -153,7 +153,7 @@ fn test(path: &Path, crate_name: &str) -> Result<()> {
     path.set_extension("rs");
     let contents = format!(
         "\
-use aoc::Result;
+use aoc::*;
 
 use {}::*;
 

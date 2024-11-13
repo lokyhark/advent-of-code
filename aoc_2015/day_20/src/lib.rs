@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 20;
@@ -15,7 +15,7 @@ pub fn part_one(input: &str) -> Result<usize> {
     }
     match houses.into_iter().skip_while(|(_, x)| *x < target).map(|(x, _)| x).next() {
         Some(house) => Ok(house),
-        None => Err("no house found".into()),
+        None => err!("no house found"),
     }
 }
 
@@ -29,6 +29,6 @@ pub fn part_two(input: &str) -> Result<usize> {
     }
     match houses.into_iter().skip_while(|(_, x)| *x < target).map(|(x, _)| x).next() {
         Some(house) => Ok(house),
-        None => Err("no house found".into()),
+        None => err!("no house found"),
     }
 }

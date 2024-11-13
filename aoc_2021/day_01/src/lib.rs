@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2021;
 pub const DAY: u32 = 1;
@@ -8,7 +8,7 @@ pub fn part_one(input: &str) -> Result<u32> {
     for line in input.trim().lines() {
         let sweep = match line.parse::<u32>() {
             Ok(sweep) => sweep,
-            Err(_) => return Err(format!("invalid sonar sweep: '{}'", line).into()),
+            Err(_) => return err!("invalid sonar sweep: '{}'", line),
         };
         report.push(sweep);
     }
@@ -29,7 +29,7 @@ pub fn part_two(input: &str) -> Result<u32> {
     for line in input.trim().lines() {
         let sweep = match line.parse::<u32>() {
             Ok(sweep) => sweep,
-            Err(_) => return Err(format!("invalid sonar sweep: '{}'", line).into()),
+            Err(_) => return err!("invalid sonar sweep: '{}'", line),
         };
         report.push(sweep);
     }

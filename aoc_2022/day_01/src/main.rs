@@ -1,6 +1,6 @@
 use std::io::{stdout, Write};
 
-use aoc::Result;
+use aoc::*;
 
 use aoc_2022_day_01::*;
 

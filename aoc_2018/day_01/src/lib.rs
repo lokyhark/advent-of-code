@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2018;
 pub const DAY: u32 = 1;
@@ -10,7 +10,7 @@ pub fn part_one(input: &str) -> Result<i32> {
     for change in input.trim().lines() {
         frequency += match change.parse::<i32>() {
             Ok(frequency) => frequency,
-            Err(_) => return Err(format!("invalid frequency change '{}'", change).into()),
+            Err(_) => return err!("invalid frequency change '{}'", change),
         }
     }
     Ok(frequency)
@@ -23,7 +23,7 @@ pub fn part_two(input: &str) -> Result<i32> {
     for change in input.trim().lines().cycle() {
         frequency += match change.parse::<i32>() {
             Ok(frequency) => frequency,
-            Err(_) => return Err(format!("invalid frequency change '{}'", change).into()),
+            Err(_) => return err!("invalid frequency change '{}'", change),
         };
         if !seen.insert(frequency) {
             return Ok(frequency);

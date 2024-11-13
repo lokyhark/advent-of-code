@@ -1,4 +1,4 @@
-use aoc::Result;
+use aoc::*;
 use itertools::Itertools;
 
 pub const YEAR: u32 = 2015;
@@ -116,7 +116,7 @@ fn parse_boss(input: &str) -> Result<Boss> {
             "Hit Points" => boss.points = value.trim().parse()?,
             "Damage" => boss.damage = value.trim().parse()?,
             "Armor" => boss.armor = value.trim().parse()?,
-            _ => panic!("invalid input"),
+            _ => return err!("invalid input"),
         }
     }
     Ok(boss)
@@ -136,7 +136,7 @@ fn parse_shop() -> Result<Shop> {
             "Weapons" => &mut shop.weapons,
             "Armor" => &mut shop.armor,
             "Rings" => &mut shop.rings,
-            _ => panic!("invalid shop"),
+            _ => return err!("invalid shop"),
         };
         loop {
             let line = match iter.next() {

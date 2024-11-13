@@ -1,23 +1,23 @@
 use std::collections::HashMap;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2020;
 pub const DAY: u32 = 4;
 
 pub fn part_one(input: &str) -> Result<usize> {
-    let passports = parse_passports(input);
+    let passports = parse_passports(input)?;
     let count = passports.iter().filter(|x| x.valid1()).count();
     Ok(count)
 }
 
 pub fn part_two(input: &str) -> Result<usize> {
-    let passports = parse_passports(input);
+    let passports = parse_passports(input)?;
     let count = passports.iter().filter(|x| x.valid2()).count();
     Ok(count)
 }
 
-fn parse_passports(input: &str) -> Vec<Passport> {
+fn parse_passports(input: &str) -> Result<Vec<Passport>> {
     let mut passports = Vec::new();
     let lines = input.lines();
     let mut passport = Passport::default();
@@ -37,15 +37,15 @@ fn parse_passports(input: &str) -> Vec<Passport> {
                 "hcl" => passport.fields.insert("hcl", value),
                 "ecl" => passport.fields.insert("ecl", value),
                 "cid" => passport.fields.insert("cid", value),
-                _ => panic!("invalid field {}", field),
+                _ => return err!("invalid field {}", field),
             };
             if let Some(value) = old {
-                panic!("duplicate field {}: {}", field, value);
+                return err!("duplicate field {}: {}", field, value);
             }
         }
     }
     passports.push(passport);
-    passports
+    Ok(passports)
 }
 
 #[derive(Debug, Default)]
@@ -112,7 +112,7 @@ impl<'a> Passport<'a> {
                             return false;
                         }
                     }
-                    _ => panic!("invalid unit {}", unit),
+                    _ => return false,
                 }
             }
         }
@@ -163,7 +163,7 @@ fn part_one_example() -> Result<()> {
 #[test]
 fn part_two_example1() -> Result<()> {
     let input = include_str!("../input/invalid.txt");
-    let passports = parse_passports(input);
+    let passports = parse_passports(input)?;
     assert!(passports.iter().all(|p| !p.valid2()));
     Ok(())
 }
@@ -171,7 +171,7 @@ fn part_two_example1() -> Result<()> {
 #[test]
 fn part_two_example2() -> Result<()> {
     let input = include_str!("../input/valid.txt");
-    let passports = parse_passports(input);
+    let passports = parse_passports(input)?;
     assert!(passports.iter().all(|p| p.valid2()));
     Ok(())
 }

@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use itertools::Itertools;
 
-use aoc::Result;
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 17;
@@ -24,11 +24,11 @@ fn parse_input(input: &str) -> Result<Vec<u32>> {
     for line in input.trim().lines() {
         match line.parse() {
             Ok(value) => containers.push(value),
-            Err(_) => return Err("invalid input".into()),
+            Err(_) => return err!("invalid input"),
         }
     }
     if containers.is_empty() {
-        return Err("invalid input".into());
+        return err!("invalid input");
     }
     Ok(containers)
 }
