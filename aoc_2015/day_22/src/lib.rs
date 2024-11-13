@@ -3,7 +3,7 @@ use std::{
     collections::BinaryHeap,
 };
 
-use aoc::{error, Result};
+use aoc::*;
 
 pub const YEAR: u32 = 2015;
 pub const DAY: u32 = 22;
@@ -40,7 +40,7 @@ fn search(wizard: Wizard, boss: Boss, hard: bool) -> Result<Combat> {
             queue.push(combat);
         }
     }
-    error!("search not found")
+    err!("search not found")
 }
 
 fn rounds(combat: &Combat, hard: bool) -> Vec<Combat> {
