@@ -1,0 +1,8 @@
+   Compiling aoc_2015_day_23 v1.0.0 (/home/johann/GitHub/advent-of-code/aoc_2015/day_23)
+    Finished `release` profile [optimized] target(s) in 0.32s
+     Running `/home/johann/GitHub/advent-of-code/target/release/aoc_2015_day_23`
+Advent of Code 2015-23
+--> part one:
+307
+--> part two:
+299
