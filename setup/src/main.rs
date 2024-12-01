@@ -5,7 +5,12 @@ use std::{
 };
 
 use anyhow::{anyhow, Result};
-use isahc::{HttpClient, ReadResponseExt};
+use isahc::{
+    config::Configurable,
+    cookies::{Cookie, CookieJar},
+    http::Uri,
+    HttpClient, ReadResponseExt,
+};
 
 fn main() -> Result<()> {
     let mut cookie = String::new();
@@ -15,8 +20,8 @@ fn main() -> Result<()> {
     }
     let client = client(&cookie)?;
     let root = std::env::current_dir().unwrap();
-    for year in 2022..=2022 {
-        for day in 6..=6 {
+    for year in 2015..=2024 {
+        for day in 1..=25 {
             setup_layout(&root, &client, year, day)?;
         }
     }
@@ -24,8 +29,10 @@ fn main() -> Result<()> {
 }
 
 fn client(cookie: &str) -> Result<HttpClient> {
-    let cookie = format!("session={}", cookie);
-    let client = HttpClient::builder().default_header("Cookie", cookie).build()?;
+    let jar = CookieJar::new();
+    let cookie = Cookie::builder("session", cookie.trim()).build().unwrap();
+    jar.set(cookie, &"https://adventofcode.com/".parse::<Uri>().unwrap()).unwrap();
+    let client = HttpClient::builder().default_header("user-agent", "aoc-dl").cookie_jar(jar).build()?;
     Ok(client)
 }
 
