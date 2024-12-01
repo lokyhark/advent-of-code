@@ -58,7 +58,7 @@ struct Room<'a> {
     checksum: &'a str,
 }
 
-impl<'a> Room<'a> {
+impl Room<'_> {
     fn is_real(&self) -> bool {
         let mut map = BTreeMap::new();
         for char in self.name.chars() {

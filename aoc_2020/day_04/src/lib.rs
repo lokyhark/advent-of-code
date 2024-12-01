@@ -53,7 +53,7 @@ struct Passport<'input> {
     fields: HashMap<&'input str, &'input str>,
 }
 
-impl<'a> Passport<'a> {
+impl Passport<'_> {
     fn valid1(&self) -> bool {
         for field in ["byr", "iyr", "eyr", "pid", "hgt", "hcl", "ecl"] {
             if !self.fields.contains_key(field) {
